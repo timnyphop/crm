@@ -1,0 +1,4 @@
+<div class="header">
+  <a href="/" class="link"><h1>Logo</h1></a>
+  <p *ngIf="isAuthenticated$ | async" (click)="logOut()" class="link">Выйти</p>
+</div>

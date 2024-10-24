@@ -1,0 +1,116 @@
+<div class="home">
+  <app-preloader *ngIf="loading" class="preloader"></app-preloader>
+  <div *ngIf="!loading">
+    <div class="tree">
+      <div
+        *ngFor="let item of organizations$ | async; let i = index"
+        class="organization-item"
+        (click)="showDropMenu(i)"
+      >
+        <h3 class="organization-name">
+          {{ item.fullname }}
+          <i class="arrow down" [ngClass]="{ rotate: dropStates[i] }"></i>
+        </h3>
+        <div class="organization-details" *ngIf="dropStates[i]">
+          <ul class="tree-item">
+            <li class="tree-item-detail">ИНН: {{ item.inn }}</li>
+            <li class="tree-item-detail">КПП: {{ item.kpp }}</li>
+            <li class="tree-item-detail">Учредитель: {{ item.uchreditel }}</li>
+            <li class="tree-item-detail">Адрес: {{ item.adresse }}</li>
+            <li class="tree-item-detail">Телефон: {{ item.phone }}</li>
+            <h4>Филиалы</h4>
+            <div *ngFor="let fillial of item.fillialas">
+              <ul class="fillials">
+                <li>
+                  {{ fillial.address }}
+                </li>
+                {{
+                  fillial.phone
+                }}
+              </ul>
+            </div>
+            <li>
+              <button
+                (click)="startEditing(i)"
+                class="submit-button"
+                *ngIf="isAdmin$ | async"
+              >
+                Редактировать
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isAdmin$ | async" class="admin-block">
+      <h3>
+        {{
+          editingIndex !== null
+            ? 'Редактировать организацию'
+            : 'Добавить организацию'
+        }}
+      </h3>
+      <form
+        (ngSubmit)="
+          editingIndex !== null ? editOrganization() : addOrganization()
+        "
+        class="form"
+      >
+        <input
+          type="text"
+          id="fullname"
+          [(ngModel)]="newOrganization.fullname"
+          name="fullname"
+          placeholder="Введите полное название"
+          required
+          class="input"
+        />
+        <input
+          type="text"
+          id="inn"
+          [(ngModel)]="newOrganization.inn"
+          name="inn"
+          placeholder="Введите ИНН"
+          required
+          class="input"
+        />
+        <input
+          type="text"
+          id="kpp"
+          [(ngModel)]="newOrganization.kpp"
+          name="kpp"
+          placeholder="Введите КПП"
+          class="input"
+        />
+        <input
+          type="text"
+          id="uchreditel"
+          [(ngModel)]="newOrganization.uchreditel"
+          name="uchreditel"
+          placeholder="Введите имя учредителя"
+          class="input"
+        />
+        <input
+          type="text"
+          id="adresse"
+          [(ngModel)]="newOrganization.adresse"
+          name="adresse"
+          placeholder="Введите адрес"
+          class="input"
+        />
+        <input
+          type="text"
+          id="phone"
+          [(ngModel)]="newOrganization.phone"
+          name="phone"
+          placeholder="Введите телефон"
+          class="input"
+        />
+        <button type="submit" class="submit-button">
+          {{ editingIndex !== null ? 'Сохранить изменения' : 'Добавить' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

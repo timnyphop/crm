@@ -1,0 +1,33 @@
+<div class="auth">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+    <div class="auth__block">
+      <h1 class="title__text">Авторизация по токену</h1>
+
+      <div class="input__group">
+        <input
+          class="input"
+          formControlName="token"
+          placeholder="Введите токен"
+        />
+        <div
+          *ngIf="form.get('token')?.touched && form.get('token')?.invalid"
+          class="error__message"
+        >
+          Please enter a valid token
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="error__message">
+        {{ errorMessage }}
+      </div>
+
+      <a href="/main" class="link">
+        <div class="button__group">
+          <button type="submit" class="button">
+            <p class="link">Login</p>
+          </button>
+        </div>
+      </a>
+    </div>
+  </form>
+</div>
