@@ -30,7 +30,6 @@ export class AuthComponent {
   isAuthenticated$: Observable<boolean>;
 
   constructor(private store: Store<IAppState>, private router: Router) {
-    // Используйте правильный тип состояния
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
 
     this.form = new FormGroup({
